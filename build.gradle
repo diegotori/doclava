@@ -1,56 +1,83 @@
+import org.gradle.internal.jvm.Jvm
+
 apply plugin: 'java'
+apply plugin: 'maven'
 
-ext {
-	LibClassesDir = "$buildDir/libclasses"
-	LocalArtifactDir = "D:/Lib/doclava"
-}
 
-group = 'org.knight.doclava'
+group = 'org.diegotori.doclava'
 archivesBaseName = 'doclava'
-version = '1.0.6'
+version = '1.0.6.1'
 
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 	options.warnings = false
 }
 
+configurations {
+	published
+}
+
+install {
+	configuration = configurations.published
+}
+
 repositories {
-	mavenCentral()
+	jcenter()
 }
 
 dependencies {
-	compile files(System.env["JAVA_HOME"] + "/lib/tools.jar")
+	compile files(Jvm.current().toolsJar)
 	compile 'com.google.guava:guava:18.0'
 	compile 'com.google.jsilver:jsilver:1.0.0'
+	compile 'org.antlr:antlr:3.4'
 }
 
-jar {
-	dependsOn 'unzipLibraries'
-	from LibClassesDir
-}
-
-uploadArchives {
-	repositories {
-		flatDir {
-			name 'LocalArtifactDir'
-			dir LocalArtifactDir
-		}
+javadoc {
+	title = "Documentation for $project.name"
+	group = JavaBasePlugin.DOCUMENTATION_GROUP
+	description "Generates Javadoc for Java Project ${project.name}."
+	//Set our code to document.
+	source = project.sourceSets.main.allJava
+	classpath = files(project.configurations.compile, compileJava.classpath);
+	failOnError = false;
+	options {
+		bootClasspath Jvm.current().runtimeJar
 	}
+	options.encoding = "UTF-8"
 }
 
-task unzipLibraries {
-	outputs.dir file(LibClassesDir)
-	doLast {
-		configurations.compile.each { lib ->
-			if (lib.name != 'tools.jar') {
-				copy {
-					from zipTree(lib)
-					into LibClassesDir
-				}
-			}
-		}
+task sourceJar(type: Jar) {
+	from sourceSets.main.allSource
+	classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	published jar
+	published sourceJar
+	published javadocJar
+}
+
+task fatJar(type: Jar, dependsOn: [':compileJava', ':processResources']){
+	group = BasePlugin.BUILD_GROUP
+	from files(sourceSets.main.output.classesDir)
+	def nonJavadocRuntimeDeps = configurations.runtime.asFileTree.files.findAll {
+		it.name != 'tools.jar'
+	}.collect {
+		zipTree(it)
 	}
+	from nonJavadocRuntimeDeps
+
+	manifest {
+		attributes 'Main-Class': 'Doclava'
+	}
+	baseName = "${project.name}-fatjar"
+	destinationDir = file("$buildDir/fat-jar")
 }
