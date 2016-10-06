@@ -67,16 +67,16 @@ artifacts {
 
 task fatJar(type: Jar, dependsOn: [':compileJava', ':processResources']){
 	group = BasePlugin.BUILD_GROUP
-	from files(sourceSets.main.output.classesDir)
-	def nonJavadocRuntimeDeps = configurations.runtime.asFileTree.files.findAll {
+	from files(sourceSets.main.output)
+	def nonJavadocRuntimeDeps = configurations.compile.asFileTree.files.findAll {
 		it.name != 'tools.jar'
 	}.collect {
-		zipTree(it)
+		it.isDirectory() ? it : zipTree(it)
 	}
 	from nonJavadocRuntimeDeps
 
 	manifest {
-		attributes 'Main-Class': 'Doclava'
+		attributes 'Main-Class': 'com.google.doclava.Doclava'
 	}
 	baseName = "${project.name}-fatjar"
 	destinationDir = file("$buildDir/fat-jar")
