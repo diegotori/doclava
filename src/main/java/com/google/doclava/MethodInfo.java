@@ -496,26 +496,26 @@ public class MethodInfo extends MemberInfo implements AbstractMethodInfo {
 
   public boolean matchesParams(String[] params, String[] dimensions, boolean varargs) {
     if (mParamStrings == null) {
-      ParameterInfo[] mine = mParameters;
-      int len = mine.length;
-      if (len != params.length) {
+      if (mParameters.length != params.length) {
         return false;
       }
-      for (int i = 0; i < len; i++) {
-        if (!mine[i].matchesDimension(dimensions[i], varargs)) {
+      int i = 0;
+      for (ParameterInfo mine : mParameters) {
+        // If the method we're matching against is a varargs method (varargs == true), then
+        // only its last parameter is varargs.
+        if (!mine.matchesDimension(dimensions[i], (i == params.length - 1) ? varargs : false)) {
           return false;
         }
-        TypeInfo myType = mine[i].type();
+        TypeInfo myType = mine.type();
         String qualifiedName = myType.qualifiedTypeName();
         String realType = myType.isPrimitive() ? "" : myType.asClassInfo().qualifiedName();
         String s = params[i];
-        int slen = s.length();
-        int qnlen = qualifiedName.length();
-        
+
         // Check for a matching generic name or best known type
         if (!matchesType(qualifiedName, s) && !matchesType(realType, s)) {
           return false;
         }
+        i++;
       }
     }
     return true;
