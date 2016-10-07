@@ -16,7 +16,25 @@
 
 package com.google.doclava;
 
-import com.sun.javadoc.*;
+import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.AnnotationTypeDoc;
+import com.sun.javadoc.AnnotationTypeElementDoc;
+import com.sun.javadoc.AnnotationValue;
+import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.ConstructorDoc;
+import com.sun.javadoc.ExecutableMemberDoc;
+import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.MethodDoc;
+import com.sun.javadoc.PackageDoc;
+import com.sun.javadoc.ParamTag;
+import com.sun.javadoc.Parameter;
+import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.SeeTag;
+import com.sun.javadoc.SourcePosition;
+import com.sun.javadoc.Tag;
+import com.sun.javadoc.ThrowsTag;
+import com.sun.javadoc.Type;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,7 +94,7 @@ public class Converter {
     cl.init(Converter.obtainType(c), Converter.convertClasses(c.interfaces()), Converter
         .convertTypes(c.interfaceTypes()), Converter.convertClasses(c.innerClasses()), Converter
         .convertMethods(c.constructors(false)), Converter.convertMethods(c.methods(false)),
-        Converter.convertMethods(annotationElements), Converter.convertFields(c.fields(false)),
+        Converter.convertMethods(annotationElements), Converter.convertFields( c.fields(false)),
         Converter.convertFields(c.enumConstants()), Converter.obtainPackage(c.containingPackage()),
         Converter.obtainClass(c.containingClass()), Converter.obtainClass(c.superclass()),
         Converter.obtainType(c.superclassType()), Converter.convertAnnotationInstances(c
@@ -463,21 +481,26 @@ public class Converter {
     @Override
     protected Object keyFor(Type t) {
       StringBuilder result = new StringBuilder();
-      result.append(t.getClass().getName()).append("/").append(t).append("/");
+//    result.append(t.getClass().getName()).append("/").append(t).append("/");
+      result.append(t.getClass().getName()).append("/")
+              .append(JavadocTypeUtils.toStringOrQualifiedTypeName(t)).append("/");
       if (t.asParameterizedType() != null) {
         result.append(t.asParameterizedType()).append("/");
         if (t.asParameterizedType().typeArguments() != null) {
           for (Type ty : t.asParameterizedType().typeArguments()) {
-            result.append(ty).append("/");
+//            result.append(ty).append("/");
+            result.append(JavadocTypeUtils.toStringOrTypeName(ty)).append("/");
           }
         }
       } else {
         result.append("NoParameterizedType//");
       }
       if (t.asTypeVariable() != null) {
-        result.append(t.asTypeVariable()).append("/");
-        if (t.asTypeVariable().bounds() != null) {
-          for (Type ty : t.asTypeVariable().bounds()) {
+//        result.append(t.asTypeVariable()).append("/");
+        result.append(JavadocTypeUtils.toStringOrTypeName(t.asTypeVariable())).append("/");
+        final Type[] bounds = JavadocTypeUtils.safelyGetTypeVariableBounds(t.asTypeVariable());
+        if (bounds != null) {
+          for (Type ty : bounds) {
             result.append(ty).append("/");
           }
         }
@@ -499,7 +522,9 @@ public class Converter {
       } else {
         result.append("NoWildCardType//");
       }
-
+//      final String resultingKey = result.toString();
+//      System.out.println("Resulting key from keyFor(): " + resultingKey + "\n");
+//      return resultingKey;
       return result.toString();
     }
   };
