@@ -16,6 +16,9 @@
 
 package com.google.doclava;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.FileWriter;
@@ -24,6 +27,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class Proofread {
+  private static final Logger logger = LoggerFactory.getLogger(Proofread.class);
   static Writer out = null;
   static final Pattern WHITESPACE = Pattern.compile("\\r?\\n");
   static final String INDENT = "        ";
@@ -40,7 +44,7 @@ public class Proofread {
         } catch (IOException ex) {}
         out = null;
       }
-      System.err.println("error opening file: " + filename);
+      logger.error("error opening file: %s", filename);
     }
   }
 

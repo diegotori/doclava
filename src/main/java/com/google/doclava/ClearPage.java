@@ -19,6 +19,9 @@ package com.google.doclava;
 import com.google.clearsilver.jsilver.JSilver;
 import com.google.clearsilver.jsilver.data.Data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClearPage {
+  private static final Logger logger = LoggerFactory.getLogger(ClearPage.class);
   /*
    * public ClearPage() { String templ = "templates/index.cs"; String filename = "docs/index.html";
    * 
@@ -169,14 +173,14 @@ public class ClearPage {
       }
       in = new FileInputStream(from);
     } catch (IOException e) {
-      System.err.println(from.getAbsolutePath() + ": Error opening file");
+      logger.error("%s: Error opening file", from.getAbsolutePath());
       return;
     }
     ensureDirectory(to);
     try {
       out = new FileOutputStream(to);
     } catch (IOException e) {
-      System.err.println(from.getAbsolutePath() + ": Error opening file");
+      logger.error("%s: Error opening file", from.getAbsolutePath());
       return;
     }
 
@@ -188,14 +192,14 @@ public class ClearPage {
       try {
         size = in.read(buf);
       } catch (IOException e) {
-        System.err.println(from.getAbsolutePath() + ": error reading file");
+        logger.error("%s: error reading file", from.getAbsolutePath());
         break;
       }
       if (size > 0) {
         try {
           out.write(buf, 0, size);
         } catch (IOException e) {
-          System.err.println(from.getAbsolutePath() + ": error writing file");
+          logger.error("%s: error writing file", from.getAbsolutePath());
         }
       } else {
         break;

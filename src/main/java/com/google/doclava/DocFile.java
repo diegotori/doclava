@@ -18,12 +18,16 @@ package com.google.doclava;
 
 import com.google.clearsilver.jsilver.data.Data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 
 public class DocFile {
+  private static final Logger logger = LoggerFactory.getLogger(DocFile.class);
   private static final Pattern LINE = Pattern.compile("(.*)[\r]?\n", Pattern.MULTILINE);
   private static final Pattern PROP = Pattern.compile("([^=]+)=(.*)");
 
@@ -86,9 +90,9 @@ public class DocFile {
       lineno++;
     }
     if (start < 0) {
-      System.err.println(docfile + ":" + lineno + ": error parsing docfile");
+      logger.error("%s:%d: error parsing docfile", docfile, lineno);
       if (line != null) {
-        System.err.println(docfile + ":" + lineno + ":" + line);
+        logger.error("%s:%d:%s", docfile, lineno, line);
       }
       System.exit(1);
     }

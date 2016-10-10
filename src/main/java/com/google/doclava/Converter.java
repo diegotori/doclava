@@ -35,11 +35,15 @@ import com.sun.javadoc.Tag;
 import com.sun.javadoc.ThrowsTag;
 import com.sun.javadoc.Type;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class Converter {
+  private static final Logger logger = LoggerFactory.getLogger(Converter.class);
   private static RootDoc root;
 
   public static void makeInfo(RootDoc r) {
@@ -522,10 +526,9 @@ public class Converter {
       } else {
         result.append("NoWildCardType//");
       }
-//      final String resultingKey = result.toString();
-//      System.out.println("Resulting key from keyFor(): " + resultingKey + "\n");
-//      return resultingKey;
-      return result.toString();
+      final String resultingKey = result.toString();
+      logger.trace("Resulting key from keyFor(): %s\n", resultingKey);
+      return resultingKey;
     }
   };
   

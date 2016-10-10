@@ -240,7 +240,7 @@ public class Doclava {
           URL federationURL = new URL(a[2]);
           federationTagger.addSiteUrl(name, federationURL);
         } catch (MalformedURLException e) {
-          System.err.println("Could not parse URL for federation: " + a[1]);
+          logger.error("Could not parse URL for federation: %s", a[1]);
           return false;
         }
       } else if (a[0].equals("-federationxml")) {
@@ -340,7 +340,7 @@ public class Doclava {
           try {
             JarUtils.copyResourcesToDirectory(thisJar, "assets/html", ClearPage.outputDir);
           } catch (IOException e) {
-            System.err.println("Failed to copy html resources.");
+            logger.error("Failed to copy html resources.");
           }
         }
       }
@@ -413,7 +413,7 @@ public class Doclava {
         break;
       }
       if (k.length() != 1) {
-        System.err.println("template.escape." + i + ".key must have a length of 1: " + k);
+        logger.error("template.escape.%d.key must have a length of 1: %s", i, k);
         return false;
       }
       escapeChars.put(k.charAt(0), v);
@@ -445,8 +445,7 @@ public class Doclava {
                    String[] words = line.split("\\s+", 2);
                    if (words.length == 2) {
                        if (words[1].charAt(0) != '#') {
-                           System.err.println(fn + ":" + lineno
-                                   + ": Only one tag allowed per line: " + line);
+                           logger.error("%s:%d: Only one tag allowed per line: %s", fn, lineno, line);
                            fail = true;
                            continue;
                        }
@@ -457,7 +456,7 @@ public class Doclava {
                    return false;
                }
            } catch (IOException ex) {
-               System.err.println("Error reading file: " + fn + " (" + ex.getMessage() + ")");
+               logger.error("Error reading file: %s (%s)", fn, ex.getMessage());
                return false;
            } finally {
                if (in != null) {
@@ -516,6 +515,9 @@ public class Doclava {
 
 
   public static int optionLength(String option) {
+    if(option.equals("-loglevel")){
+      return 2;
+    }
     if (option.equals("-d")) {
       return 2;
     }
@@ -692,7 +694,7 @@ public class Doclava {
             classesToCheck = pkg.getInterfaces();
             break;
           default:
-            System.err.println("Error reading package: " + pkg.name());
+            logger.error("Error reading package: %s", pkg.name());
             break;
         }
         for (ClassInfo cl : classesToCheck) {
@@ -769,7 +771,7 @@ public class Doclava {
               ensureSlash(ClearPage.outputDir) + assetsOutputDir);
         }
       } catch (IOException e) {
-        System.err.println("Error copying assets directory.");
+        logger.error("Error copying assets directory.");
         e.printStackTrace();
         return;
       }
@@ -877,7 +879,7 @@ public class Doclava {
         stream.println(getPrintableName(cl));
       }
     } catch (FileNotFoundException e) {
-      System.err.println("error writing file: " + filename);
+      logger.error("error writing file: %s", filename);
     } finally {
       if (stream != null) {
         stream.close();
@@ -934,7 +936,7 @@ public class Doclava {
             classesToCheck = pkg.getInterfaces();
             break;
           default:
-            System.err.println("Error reading package: " + pkg.name());
+            logger.error("Error reading package: %s", pkg.name());
             break;
         }
         for (ClassInfo cl : classesToCheck) {

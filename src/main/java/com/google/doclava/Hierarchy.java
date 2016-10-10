@@ -18,11 +18,15 @@ package com.google.doclava;
 
 import com.google.clearsilver.jsilver.data.Data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Set;
 
 public class Hierarchy {
+  private static final Logger logger = LoggerFactory.getLogger(Hierarchy.class);
   public static void makeHierarchy(Data hdf, ClassInfo[] classes) {
     HashMap<String, TreeSet<String>> nodes = new HashMap<String, TreeSet<String>>();
 
@@ -64,10 +68,10 @@ public class Hierarchy {
     if (false) {
       Set<String> keys = nodes.keySet();
       if (keys.size() > 0) {
-        System.err.println("The following classes are hidden but"
+        logger.error("The following classes are hidden but"
             + " are superclasses of not-hidden classes");
         for (String n : keys) {
-          System.err.println("  " + n);
+          logger.error("  " + n);
         }
       }
     }

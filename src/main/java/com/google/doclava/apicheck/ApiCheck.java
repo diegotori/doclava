@@ -36,6 +36,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -43,6 +46,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 public class ApiCheck {
+  private static final Logger logger = LoggerFactory.getLogger(ApiCheck.class);
   // parse out and consume the -whatever command line flags
   private static ArrayList<String[]> parseFlags(ArrayList<String> allArgs) {
     ArrayList<String[]> ret = new ArrayList<String[]>();
@@ -101,7 +105,7 @@ public class ApiCheck {
           }
           Errors.setErrorLevel(Integer.parseInt(a[1]), level);
         } catch (NumberFormatException e) {
-          System.err.println("Bad argument: " + a[0] + " " + a[1]);
+          logger.error("Bad argument: $s $s", a[0], a[1]);
           return new ErrorReport(Errors.EXIT_BAD_ARGUMENTS, Errors.getErrors());
         }
       }
@@ -115,7 +119,7 @@ public class ApiCheck {
       newApi = parseApi(args.get(1));
     } catch (ApiParseException e) {
       e.printStackTrace();
-      System.err.println("Error parsing API");
+      logger.error("Error parsing API");
       return new ErrorReport(Errors.EXIT_PARSE_ERROR, Errors.getErrors());
     }
 

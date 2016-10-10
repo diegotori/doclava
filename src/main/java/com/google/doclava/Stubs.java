@@ -16,6 +16,9 @@
 
 package com.google.doclava;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 public class Stubs {
+  private static final Logger logger = LoggerFactory.getLogger(Stubs.class);
   private static HashSet<ClassInfo> notStrippable;
 
   public static void writeStubsAndXml(String stubsDir, File xmlFile,
@@ -327,7 +331,7 @@ public class Stubs {
       stream = new PrintStream(file);
       writeClassFile(stream, cl);
     } catch (FileNotFoundException e) {
-      System.err.println("error writing file: " + filename);
+      logger.error("error writing file: %s", filename);
     } finally {
       if (stream != null) {
         stream.close();

@@ -16,10 +16,14 @@
 
 package com.google.doclava;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Set;
 import java.util.TreeSet;
 
 public class Errors {
+  private static final Logger logger = LoggerFactory.getLogger(Errors.class);
   public static boolean hadError = false;
   private static boolean warningsAreErrors = false;
   private static TreeSet<ErrorMessage> allErrors = new TreeSet<ErrorMessage>();
@@ -56,12 +60,12 @@ public class Errors {
   public static void printErrors(Set<ErrorMessage> errors) {
     for (ErrorMessage m : errors) {
       if (m.getError().getLevel() == WARNING) {
-        System.err.println(m.toString());
+        logger.error(m.toString());
       }
     }
     for (ErrorMessage m : errors) {
       if (m.getError().getLevel() == ERROR) {
-        System.err.println(m.toString());
+        logger.error(m.toString());
       }
     }
   }
