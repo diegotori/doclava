@@ -1123,9 +1123,9 @@ table.download th {
 .ui-resizable .ui-resizable-handle { display: block; }
 body .ui-resizable-disabled .ui-resizable-handle { display: none; }
 body .ui-resizable-autohide .ui-resizable-handle { display: none; }
-.ui-resizable-s { cursor: s-resize; height: 1px; width: 100%; bottom: 0px; left: 0px;
+.ui-resizable-s { cursor: s-resize; height: 6px; width: 100%; bottom: 0px; left: 0px;
   background: transparent url("images/resizable-s2.gif") repeat scroll center top; }
-.ui-resizable-e { cursor: e-resize; width: 1px; right: 0px; top: 0px; height: 100%;
+.ui-resizable-e { cursor: e-resize; width: 6px; right: 0px; top: 0px; height: 100%;
   background: transparent url("images/resizable-e2.gif") repeat scroll right center; }
 
 @media print {
