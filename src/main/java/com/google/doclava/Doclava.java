@@ -34,6 +34,11 @@ import com.sun.javadoc.MemberDoc;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.Type;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.impl.SimpleLogger;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -52,6 +57,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Doclava {
+  private static final Logger logger = LoggerFactory.getLogger(Doclava.class);
   private static final String SDK_CONSTANT_ANNOTATION = "android.annotation.SdkConstant";
   private static final String SDK_CONSTANT_TYPE_ACTIVITY_ACTION =
       "android.annotation.SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION";
@@ -150,10 +156,17 @@ public class Doclava {
     ArrayList<String> knownTagsFiles = new ArrayList<String>();
 
     root = r;
-
+    //By default, log only errors
+    System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
     String[][] options = r.options();
     for (String[] a : options) {
-      if (a[0].equals("-d")) {
+      if(a[0].equals("-loglevel")){
+        final String currentLogLevel = a[1];
+        if(DoclavaLoggerUtils.isValidLogLevel(currentLogLevel)){
+          //Override default log level with one from string options
+          System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, currentLogLevel.toUpperCase());
+        }
+      } else if (a[0].equals("-d")) {
         ClearPage.outputDir = a[1];
       } else if (a[0].equals("-templatedir")) {
         ClearPage.addTemplateDir(a[1]);
