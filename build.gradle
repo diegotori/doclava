@@ -33,6 +33,10 @@ dependencies {
 	compile 'com.google.guava:guava:18.0'
 	compile 'com.google.jsilver:jsilver:1.0.0'
 	compile 'org.antlr:antlr:3.4'
+
+	compile 'org.slf4j:slf4j-simple:1.7.21'
+	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.5'
+	compile 'org.apache.logging.log4j:log4j-core:2.5'
 }
 
 javadoc {
@@ -67,6 +71,7 @@ artifacts {
 
 task fatJar(type: Jar, dependsOn: [':compileJava', ':processResources']){
 	group = BasePlugin.BUILD_GROUP
+	description = "Creates a statically linked $project.name fat JAR binary."
 	from files(sourceSets.main.output)
 	def nonJavadocRuntimeDeps = configurations.compile.asFileTree.files.findAll {
 		it.name != 'tools.jar'
