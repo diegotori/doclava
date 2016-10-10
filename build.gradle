@@ -34,9 +34,9 @@ dependencies {
 	compile 'com.google.jsilver:jsilver:1.0.0'
 	compile 'org.antlr:antlr:3.4'
 
-	compile 'org.slf4j:slf4j-simple:1.7.21'
-	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.5'
-	compile 'org.apache.logging.log4j:log4j-core:2.5'
+	compile 'org.slf4j:slf4j-api:1.7.21'
+	compile 'ch.qos.logback:logback-classic:1.1.7'
+	compile 'ch.qos.logback:logback-core:1.1.7'
 }
 
 javadoc {

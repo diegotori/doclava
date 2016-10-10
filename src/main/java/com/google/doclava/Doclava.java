@@ -37,7 +37,6 @@ import com.sun.javadoc.Type;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.impl.SimpleLogger;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -55,6 +54,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import ch.qos.logback.classic.Level;
 
 public class Doclava {
   private static final Logger logger = LoggerFactory.getLogger(Doclava.class);
@@ -156,15 +157,18 @@ public class Doclava {
     ArrayList<String> knownTagsFiles = new ArrayList<String>();
 
     root = r;
-    //By default, log only errors
-    System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
+    DoclavaLoggerUtils.wrapDefaultLoggerWithDefaultPatternLayout();
+    //By default, log only up to info statements
+    ch.qos.logback.classic.Logger rootLogger =
+            (ch.qos.logback.classic.Logger)LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+    rootLogger.setLevel(Level.toLevel("info"));
     String[][] options = r.options();
     for (String[] a : options) {
       if(a[0].equals("-loglevel")){
         final String currentLogLevel = a[1];
         if(DoclavaLoggerUtils.isValidLogLevel(currentLogLevel)){
           //Override default log level with one from string options
-          System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, currentLogLevel.toUpperCase());
+          rootLogger.setLevel(Level.toLevel(currentLogLevel.toLowerCase()));
         }
       } else if (a[0].equals("-d")) {
         ClearPage.outputDir = a[1];
