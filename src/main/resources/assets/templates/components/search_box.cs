@@ -19,12 +19,12 @@ def:default_search_box() ?>
                       </table>
                   </div>
                   </td>
-                  <!-- <td class="gsc-search-button">
+                  <td class="gsc-search-button">
                     <input type="submit" value="Search" title="search" id="search-button" class="gsc-search-button" />
                   </td>
                   <td class="gsc-clear-button">
                     <div title="clear results" class="gsc-clear-button">&nbsp;</div>
-                  </td> -->
+                  </td>
                 </tr></tbody>
               </table>
           </form>

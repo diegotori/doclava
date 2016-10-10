@@ -107,17 +107,6 @@ function search_changed(e, kd, toroot)
     var search = document.getElementById("search_autocomplete");
     var text = search.value.replace(/(^ +)|( +$)/g, '');
 
-    //27 = esc
-    if (e.keyCode == 27) {
-        gSelectedIndex = -1;
-        gSelectedID = -1;
-        gMatches.length = 0;
-        gLastText = "";
-        document.getElementById("search_filtered_div").className = "no-display";
-        search.value = "";
-        return false;
-    }
-
     // 13 = enter
     if (e.keyCode == 13) {
         document.getElementById("search_filtered_div").className = "no-display";

@@ -7,8 +7,8 @@ def:custom_left_nav() ?>
           <div id="resize-packages-nav">
             <div id="packages-nav">
               <div id="index-links">
-                <a href="<?cs var:toroot ?>packages.html" <?cs if:(page.title == "Package Index") ?>class="selected"<?cs /if ?> >Packages</a> | 
-                <a href="<?cs var:toroot ?>classes.html" <?cs if:(page.title == "Class Index") ?>class="selected"<?cs /if ?>>Classes</a>
+                <a href="<?cs var:toroot ?>packages.html" <?cs if:(page.title == "Package Index") ?>class="selected"<?cs /if ?> >Package Index</a> | 
+                <a href="<?cs var:toroot ?>classes.html" <?cs if:(page.title == "Class Index") ?>class="selected"<?cs /if ?>>Class Index</a>
               </div>
               <ul>
                 <?cs call:package_link_list(docs.packages) ?>
@@ -44,15 +44,15 @@ def:custom_left_nav() ?>
         </div><!-- end nav-panels -->
         <div id="nav-tree" style="display:none">
           <div id="index-links">
-            <a href="<?cs var:toroot ?>packages.html" <?cs if:(page.title == "Package Index") ?>class="selected"<?cs /if ?> >Packages</a> | 
-            <a href="<?cs var:toroot ?>classes.html" <?cs if:(page.title == "Class Index") ?>class="selected"<?cs /if ?>>Classes</a>
+            <a href="<?cs var:toroot ?>packages.html" <?cs if:(page.title == "Package Index") ?>class="selected"<?cs /if ?> >Package Index</a> | 
+            <a href="<?cs var:toroot ?>classes.html" <?cs if:(page.title == "Class Index") ?>class="selected"<?cs /if ?>>Class Index</a>
           </div>
         </div><!-- end nav-tree -->
       </div><!-- end swapper -->
     </div> <!-- end side-nav -->
     <script>
       if (!isMobile) {
-        //$("<a href='#' id='nav-swap' onclick='swapNav();return false;' style='font-size:10px;line-height:9px;margin-left:1em;text-decoration:none;'><span id='tree-link'>Use Tree Navigation</span><span id='panel-link' style='display:none'>Use Panel Navigation</span></a>").appendTo("#side-nav");
+        $("<a href='#' id='nav-swap' onclick='swapNav();return false;' style='font-size:10px;line-height:9px;margin-left:1em;text-decoration:none;'><span id='tree-link'>Use Tree Navigation</span><span id='panel-link' style='display:none'>Use Panel Navigation</span></a>").appendTo("#side-nav");
         chooseDefaultNav();
         if ($("#nav-tree").is(':visible')) {
           init_default_navtree("<?cs var:toroot ?>");
@@ -62,7 +62,7 @@ def:custom_left_nav() ?>
             scrollIntoView("classes-nav");
           });
         }
-        //$("#swapper").css({borderBottom:"2px solid #aaa"});
+        $("#swapper").css({borderBottom:"2px solid #aaa"});
       } else {
         swapNav(); // tree view should be used on mobile
       }
