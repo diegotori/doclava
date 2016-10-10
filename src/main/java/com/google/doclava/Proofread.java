@@ -44,7 +44,7 @@ public class Proofread {
         } catch (IOException ex) {}
         out = null;
       }
-      logger.error("error opening file: %s", filename);
+      logger.error("error opening file: {}", filename);
     }
   }
 

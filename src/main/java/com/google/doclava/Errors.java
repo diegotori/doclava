@@ -60,7 +60,7 @@ public class Errors {
   public static void printErrors(Set<ErrorMessage> errors) {
     for (ErrorMessage m : errors) {
       if (m.getError().getLevel() == WARNING) {
-        logger.error(m.toString());
+        logger.warn(m.toString());
       }
     }
     for (ErrorMessage m : errors) {

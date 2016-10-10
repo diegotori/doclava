@@ -331,7 +331,7 @@ public class Stubs {
       stream = new PrintStream(file);
       writeClassFile(stream, cl);
     } catch (FileNotFoundException e) {
-      logger.error("error writing file: %s", filename);
+      logger.error("error writing file: {}", filename);
     } finally {
       if (stream != null) {
         stream.close();

@@ -90,9 +90,9 @@ public class DocFile {
       lineno++;
     }
     if (start < 0) {
-      logger.error("%s:%d: error parsing docfile", docfile, lineno);
+      logger.error("{}:{}: error parsing docfile", docfile, lineno);
       if (line != null) {
-        logger.error("%s:%d:%s", docfile, lineno, line);
+        logger.error("{}:{}:{}", docfile, lineno, line);
       }
       System.exit(1);
     }

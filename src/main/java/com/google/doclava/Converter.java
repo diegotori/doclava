@@ -527,7 +527,7 @@ public class Converter {
         result.append("NoWildCardType//");
       }
       final String resultingKey = result.toString();
-      logger.trace("Resulting key from keyFor(): %s\n", resultingKey);
+      logger.trace("Resulting key from keyFor(): {}", resultingKey);
       return resultingKey;
     }
   };

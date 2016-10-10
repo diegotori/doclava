@@ -240,7 +240,7 @@ public class Doclava {
           URL federationURL = new URL(a[2]);
           federationTagger.addSiteUrl(name, federationURL);
         } catch (MalformedURLException e) {
-          logger.error("Could not parse URL for federation: %s", a[1]);
+          logger.error("Could not parse URL for federation: {}", a[1]);
           return false;
         }
       } else if (a[0].equals("-federationxml")) {
@@ -384,8 +384,7 @@ public class Doclava {
       }
 
       long time = System.nanoTime() - startTime;
-      System.out.println("DroidDoc took " + (time / 1000000000) + " sec. to write docs to "
-          + ClearPage.outputDir);
+      logger.info("DroidDoc took {} sec. to write docs to {}", (time / 1000000000), ClearPage.outputDir);
     }
 
     Errors.printErrors();
@@ -413,7 +412,7 @@ public class Doclava {
         break;
       }
       if (k.length() != 1) {
-        logger.error("template.escape.%d.key must have a length of 1: %s", i, k);
+        logger.error("template.escape.{}.key must have a length of 1: {}", i, k);
         return false;
       }
       escapeChars.put(k.charAt(0), v);
@@ -445,7 +444,7 @@ public class Doclava {
                    String[] words = line.split("\\s+", 2);
                    if (words.length == 2) {
                        if (words[1].charAt(0) != '#') {
-                           logger.error("%s:%d: Only one tag allowed per line: %s", fn, lineno, line);
+                           logger.error("{}:{}: Only one tag allowed per line: {}", fn, lineno, line);
                            fail = true;
                            continue;
                        }
@@ -456,7 +455,7 @@ public class Doclava {
                    return false;
                }
            } catch (IOException ex) {
-               logger.error("Error reading file: %s (%s)", fn, ex.getMessage());
+               logger.error("Error reading file: {} ({})", fn, ex.getMessage());
                return false;
            } finally {
                if (in != null) {
@@ -694,7 +693,7 @@ public class Doclava {
             classesToCheck = pkg.getInterfaces();
             break;
           default:
-            logger.error("Error reading package: %s", pkg.name());
+            logger.error("Error reading package: {}", pkg.name());
             break;
         }
         for (ClassInfo cl : classesToCheck) {
@@ -879,7 +878,7 @@ public class Doclava {
         stream.println(getPrintableName(cl));
       }
     } catch (FileNotFoundException e) {
-      logger.error("error writing file: %s", filename);
+      logger.error("error writing file: {}", filename);
     } finally {
       if (stream != null) {
         stream.close();
@@ -936,7 +935,7 @@ public class Doclava {
             classesToCheck = pkg.getInterfaces();
             break;
           default:
-            logger.error("Error reading package: %s", pkg.name());
+            logger.error("Error reading package: {}", pkg.name());
             break;
         }
         for (ClassInfo cl : classesToCheck) {

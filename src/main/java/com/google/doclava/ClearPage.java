@@ -173,14 +173,14 @@ public class ClearPage {
       }
       in = new FileInputStream(from);
     } catch (IOException e) {
-      logger.error("%s: Error opening file", from.getAbsolutePath());
+      logger.error("{}: Error opening file", from.getAbsolutePath());
       return;
     }
     ensureDirectory(to);
     try {
       out = new FileOutputStream(to);
     } catch (IOException e) {
-      logger.error("%s: Error opening file", from.getAbsolutePath());
+      logger.error("{}: Error opening file", from.getAbsolutePath());
       return;
     }
 
@@ -192,14 +192,14 @@ public class ClearPage {
       try {
         size = in.read(buf);
       } catch (IOException e) {
-        logger.error("%s: error reading file", from.getAbsolutePath());
+        logger.error("{}: error reading file", from.getAbsolutePath());
         break;
       }
       if (size > 0) {
         try {
           out.write(buf, 0, size);
         } catch (IOException e) {
-          logger.error("%s: error writing file", from.getAbsolutePath());
+          logger.error("{}: error writing file", from.getAbsolutePath());
         }
       } else {
         break;
