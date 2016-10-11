@@ -31,7 +31,7 @@ Maven/Gradle projects.
 
 We use [Gradle](http://www.gradle.org/) (via standalone wrapper) to build this project:
 
-    ./gradlew clean assemble install
+    ./gradlew clean assemble publishToMavenLocal
 
 This will build a jar which will be installed to your development environment's local Maven
 repo. All installed artifacts can be found in your `build` directory under `build/libs` and
@@ -44,7 +44,14 @@ without Maven), run the following command:
 
 This will build a jar located in `build/fat-jar`.
 
-Once you have the artifact, run `javadoc` command with the `-doclet` and `-docletpath`
+If you want to build both within a single directory (such as for uploading to a private Maven repo),
+run the following command:
+
+     ./gradlew clean assemble createStandaloneArtifacts
+
+This will save the Maven artifacts and fat JAR in `build/standalone-dist`.
+
+Once you have the artifact, run the `javadoc` command with the `-doclet` and `-docletpath`
 (if not in the classpath) options to generate Javadocs, for example:
 
 

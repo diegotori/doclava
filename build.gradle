@@ -1,7 +1,7 @@
 import org.gradle.internal.jvm.Jvm
 
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 
 group = 'com.diegotori.doclava'
@@ -14,14 +14,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 	options.warnings = false
-}
-
-configurations {
-	published
-}
-
-install {
-	configuration = configurations.published
 }
 
 repositories {
@@ -64,9 +56,25 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-	published jar
-	published sourceJar
-	published javadocJar
+	archives jar
+	archives sourceJar
+	archives javadocJar
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+			artifact sourceJar
+			artifact javadocJar
+		}
+	}
+}
+
+model {
+	tasks.generatePomFileForMavenJavaPublication {
+		destination = file("$buildDir/poms/$project.name-${project.version}.pom")
+	}
 }
 
 task fatJar(type: Jar, dependsOn: [':compileJava', ':processResources']){
@@ -85,4 +93,15 @@ task fatJar(type: Jar, dependsOn: [':compileJava', ':processResources']){
 	}
 	baseName = "${project.name}-fatjar"
 	destinationDir = file("$buildDir/fat-jar")
+}
+
+task createStandaloneArtifacts(type: Copy,
+		dependsOn: [":fatJar", ":generatePomFileForMavenJavaPublication"]){
+	group = PublishingPlugin.PUBLISH_TASK_GROUP
+	doFirst {
+		from generatePomFileForMavenJavaPublication.destination
+	}
+	from project.configurations.archives.allArtifacts.files
+	from fatJar.destinationDir
+	into file("$buildDir/standalone-dist")
 }
