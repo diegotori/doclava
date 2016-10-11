@@ -4,9 +4,9 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 
-group = 'org.diegotori.doclava'
-archivesBaseName = 'doclava'
-version = '1.0.6.1'
+group = 'com.diegotori.doclava'
+archivesBaseName = 'doclava-rebirth'
+version = '1.0.6.1-SNAPSHOT'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -40,7 +40,7 @@ dependencies {
 }
 
 javadoc {
-	title = "Documentation for $project.name"
+	title = "Documentation for $project.name."
 	group = JavaBasePlugin.DOCUMENTATION_GROUP
 	description "Generates Javadoc for Java Project ${project.name}."
 	//Set our code to document.

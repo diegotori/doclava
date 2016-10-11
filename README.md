@@ -1,27 +1,68 @@
-Doclava
+Doclava-Rebirth
 =======
 
-Doclava is a new javadoc doclet which is written by Google and used for Android Developer Docs. Clear and efficient(support search).
+Doclava is a very recent, yet currently abandoned Javadoc Doclet written by Google and officially
+used for generating Android Developer Documentation as seen
+[here](https://developer.android.com/reference).
 
-This project is forked from https://code.google.com/p/doclava/, and with a few style modification.
+It provides clear and efficient searching of documented classes, release version filtering,
+granular exclusion of classes, fields, and methods using the `@hide` annotation, and
+custom styling of documentation components using [ClearSilver](http://www.clearsilver.net)
+templates.
 
-## How to build
-The [official site](https://code.google.com/p/doclava/) has binary downloads offered(or you can download it from [here](https://github.com/wf2030/doclava/releases)).
+This current project originated from the now defunct
+[Google Code](https://code.google.com/p/doclava) project and was
+directly forked from this GitHub [project](https://github.com/wf2030/doclava).
 
-We use [Gradle](http://www.gradle.org/) to build this project.
+Doclava-Rebirth aims to update the existing Doclava code to support Java 8, as well as
+keep it in line with the current
+[AOSP Project](https://android.googlesource.com/platform/external/doclava) repo. There has been no
+updates since version 1.0.6, released on January 3, 2014. This is an attempt to continue with that
+process under a different name.
+As a result, it will revive this once regularly updated project with new releases based on the
+current work that Google is performing on the AOSP version.
 
-    gradle build
+## How to Build
+The [official site](https://code.google.com/p/doclava) offers binary downloads.
+However, you can download non-official but regularly updated releases from
+[here](https://github.com/diegotori/doclava/releases). Eventually, releases will be deployed to
+[Bintray JCenter](https://bintray.com/bintray/jcenter) for convenient use within your
+Maven/Gradle projects.
 
-This will build a jar in build/libs which is the artifact.
+We use [Gradle](http://www.gradle.org/) (via standalone wrapper) to build this project:
 
-Once you have the artifact, run `javadoc` command with the `-doclet` and `-docletpath`(if not in classpath) options to generate javadocs, for example:
+    ./gradlew clean assemble install
+
+This will build a jar which will be installed to your development environment's local Maven
+repo. All installed artifacts can be found in your `build` directory under `build/libs` and
+`build/poms`.
+
+However, if you want a statically linked binary version of this library (ideal for standalone use
+without Maven), run the following command:
+
+     ./gradlew clean fatJar
+
+This will build a jar located in `build/fat-jar`.
+
+Once you have the artifact, run `javadoc` command with the `-doclet` and `-docletpath`
+(if not in the classpath) options to generate Javadocs, for example:
 
 
-    javadoc -encoding UTF-8 -sourcepath src -d docs -subpackages project.package -doclet com.google.doclava.Doclava -docletpath doclava.jar -generatesources -project.name MyProject
+    javadoc -encoding UTF-8 -sourcepath src -d docs -subpackages project.package
+        -doclet com.google.doclava.Doclava -docletpath /path/to/doclavaJar
+        -generatesources -project.name MyProject
 
 
-More details please refer to [official site](https://code.google.com/p/doclava/).
+For more details, please refer to the [official site](https://code.google.com/p/doclava).
 
-Here is a screenshot
+## Future Plans
+* Deploying new releases to [Bintray JCenter](https://bintray.com/bintray/jcenter).
+* Integrating the current master branch code from the current
+[AOSP project](https://android.googlesource.com/platform/external/doclava), which replaces
+XML-based federated docs with text file versions as per current AOSP standard.
+* Creating a Wiki section for this project detailing how to effectively use Doclava's currently
+un-documented features.
+* Porting over Wiki pages from the now-defunct Google Code project.
 
-![Doclava](assets/screenshot.png)
+Credit goes to [kwf2030](https://github.com/kwf2030) for laying the initial groundwork for
+this fork, and to Google for creating such a powerful alternative to plain old Javadoc.
