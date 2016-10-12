@@ -804,8 +804,8 @@ public class Stubs {
     xmlWriter.println("<" + declString + " name=\"" + cl.name() + "\"");
     if (!cl.isInterface() && !cl.qualifiedName().equals("java.lang.Object")) {
       xmlWriter.println(" extends=\""
-          + ((cl.realSuperclass() == null) ? "java.lang.Object" : cl.realSuperclass()
-              .qualifiedName()) + "\"");
+          + ((cl.realSuperclass() == null) ? "java.lang.Object" :
+              makeXMLcompliant(cl.realSuperclass().qualifiedName())) + "\"");
     }
     xmlWriter.println(" abstract=\"" + cl.isAbstract() + "\"\n" + " static=\"" + cl.isStatic()
         + "\"\n" + " final=\"" + cl.isFinal() + "\"\n" + " deprecated=\"" + deprecatedString
